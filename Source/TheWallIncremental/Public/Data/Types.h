@@ -1,5 +1,9 @@
 ﻿#pragma once
 
+#include "CoreMinimal.h"
+#include "Curves/CurveBase.h"
+#include "Types.generated.h"
+
 UENUM(BlueprintType)
 enum class EStat : uint8
 {
@@ -29,8 +33,8 @@ struct FAbility
 	EAbilityStat stat;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ability")
-	UCurveBase curveStat;
+	UCurveBase* curveStat;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ability")
-	UCurveBase curveCost;
+	UCurveBase* curveCost;
 };
