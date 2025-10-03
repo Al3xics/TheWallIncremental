@@ -30,11 +30,11 @@ struct FAbility
 	GENERATED_BODY()
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ability")
-	EAbilityStat stat;
+	EAbilityStat Stat;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ability")
-	UCurveBase* curveStat;
+	UCurveBase* CurveStat;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ability")
-	UCurveBase* curveCost;
+	UCurveBase* CurveCost;
 };
