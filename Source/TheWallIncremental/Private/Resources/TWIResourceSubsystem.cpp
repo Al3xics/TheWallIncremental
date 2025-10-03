@@ -19,11 +19,15 @@ void UTWIResourceSubsystem::Deinitialize()
 void UTWIResourceSubsystem::AddGold(const int32 Amount)
 {
 	Gold += Amount;
+	UE_LOG(LogResourceSubsystem, Log, TEXT("Get %d Gold"), Amount);
+	UE_LOG(LogResourceSubsystem, Log, TEXT("Current Gold: %d"), Gold);
 }
 
 void UTWIResourceSubsystem::SpendGold(const int32 Amount)
 {
 	Gold = FMath::Max(0, Gold - Amount);
+	UE_LOG(LogResourceSubsystem, Log, TEXT("Spend %d Gold"), Amount);
+	UE_LOG(LogResourceSubsystem, Log, TEXT("Current Gold: %d"), Gold);
 }
 
 int32 UTWIResourceSubsystem::GetGold() const

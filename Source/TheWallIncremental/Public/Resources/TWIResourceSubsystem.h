@@ -19,7 +19,6 @@ private:
 
 public:
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
-	
 	virtual void Deinitialize() override;
 	
 	UFUNCTION(BlueprintCallable, Category = "Resources")

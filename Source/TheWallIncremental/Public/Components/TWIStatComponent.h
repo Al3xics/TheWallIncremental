@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "Data/Types.h"
 #include "TWIStatComponent.generated.h"
 
 
@@ -12,16 +13,30 @@ class THEWALLINCREMENTAL_API UTWIStatComponent : public UActorComponent
 {
 	GENERATED_BODY()
 
-public:
-	// Sets default values for this component's properties
-	UTWIStatComponent();
+private:
 
 protected:
-	// Called when the game starts
 	virtual void BeginPlay() override;
 
 public:
-	// Called every frame
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType,
-	                           FActorComponentTickFunction* ThisTickFunction) override;
+	UTWIStatComponent();
+	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Stats")
+	TMap<EStat, float> Stats;
+	
+	UFUNCTION(BlueprintCallable, Category = "Stats")
+	float GetStat(EStat Stat) const;
+
+	UFUNCTION(BlueprintCallable, Category = "Stats")
+	bool HasStat(EStat Stat) const;
+
+	UFUNCTION(BlueprintCallable, Category = "Stats")
+	void AddToStat(EStat Stat, float Delta);
+
+	UFUNCTION(BlueprintCallable, Category = "Stats")
+	void SetStat(EStat Stat, float Value);
+
+	UFUNCTION(BlueprintCallable, Category = "Stats")
+	void InitializeStat(EStat Stat, float Value);
 };
