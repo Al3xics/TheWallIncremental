@@ -25,7 +25,7 @@ enum class EAbilityStat : uint8
 };
 
 USTRUCT(BlueprintType)
-struct FAbility
+struct FAbilityStat
 {
 	GENERATED_BODY()
 	
