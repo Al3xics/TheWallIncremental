@@ -1,25 +1,18 @@
-﻿// Fill out your copyright notice in the Description page of Project Settings.
-
-#pragma once
-
-#include "CoreMinimal.h"
-#include "TheWallIncremental/Public/Ability/TWIAbility.h"
+﻿#pragma once
+#include "Ability/TWIAbility.h"
 #include "TWIMagicMissileAbility.generated.h"
 
 UCLASS()
-class THEWALLINCREMENTAL_API ATWIMagicMissileAbility : public ATWIAbility
+class ATWIMagicMissileAbility : public ATWIAbility
 {
 	GENERATED_BODY()
-
 public:
-	// Sets default values for this actor's properties
 	ATWIMagicMissileAbility();
 
 protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
+	/** Rayon plus petit que la valeur container */
+	UPROPERTY(EditDefaultsOnly, Category="MagicMissile")
+	float LocalRadiusMultiplier = 0.5f;
 
-public:
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
+	virtual void OnActivate() override;
 };

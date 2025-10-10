@@ -1,26 +1,45 @@
-﻿// Fill out your copyright notice in the Description page of Project Settings.
-
-
+﻿// Private/Ability/TWILittleWallAbility.cpp
 #include "TheWallIncremental/Public/Ability/AbilityScripts/TWILittleWallAbility.h"
+#include "Components/StaticMeshComponent.h"
 
-
-// Sets default values
 ATWILittleWallAbility::ATWILittleWallAbility()
 {
-	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	bUseArea = false; // pas besoin de zone de détection
+
+	Mesh = CreateDefaultSubobject<UStaticMeshComponent>("Mesh");
+	RootComponent = Mesh;
+
+	Mesh->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	Mesh->SetCollisionResponseToAllChannels(ECR_Block);
+
+	PrimaryActorTick.bCanEverTick = false;
 }
 
-// Called when the game starts or when spawned
-void ATWILittleWallAbility::BeginPlay()
+void ATWILittleWallAbility::OnActivate()
 {
-	Super::BeginPlay();
-	
+	// Positionné par le Container via Target
+	SetActorLocation(Target);
+
+	CurrentHP = MaxHP;
+
+	// Option : s’autodétruit après Lifetime si défini
+	if (Lifetime > 0.f)
+	{
+		FTimerHandle Th;
+		GetWorldTimerManager().SetTimer(Th, this, &ATWILittleWallAbility::DestroyAbility, Lifetime, false);
+	}
 }
 
-// Called every frame
-void ATWILittleWallAbility::Tick(float DeltaTime)
+void ATWILittleWallAbility::ApplyDamage(float Amount)
 {
-	Super::Tick(DeltaTime);
+	CurrentHP = FMath::Max(0.f, CurrentHP - Amount);
+	if (CurrentHP <= 0.f)
+	{
+		DestroyAbility(); // on détruit le mur
+	}
 }
 
+void ATWILittleWallAbility::OnEnd()
+{
+	// Effet visuel, son, particules...
+}

@@ -31,7 +31,7 @@ public:
 	void MoveToWall();
 
 	UFUNCTION(BlueprintCallable, Category = "Enemy")
-	void TakeDamage(float Amount);
+	void ApplyDamage(float Amount);
 
 	UFUNCTION(BlueprintCallable, Category = "Enemy")
 	bool IsAlive() const;

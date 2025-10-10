@@ -37,7 +37,7 @@ void ATWIWall::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
-void ATWIWall::TakeDamage(float Amount)
+void ATWIWall::ApplyDamage(float Amount)
 {
 	StatComponent->AddToStat(EStat::HP, -Amount);
 	UE_LOG(LogWall, Log, TEXT("Wall took %f damage"), Amount);

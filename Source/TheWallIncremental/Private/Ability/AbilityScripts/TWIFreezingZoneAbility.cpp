@@ -1,26 +1,54 @@
-﻿// Fill out your copyright notice in the Description page of Project Settings.
+﻿#include "TheWallIncremental/Public/Ability/AbilityScripts/TWIFreezingZoneAbility.h"
+#include "Characters/TWIEnemy.h"
+#include "Components/TWIStatComponent.h" // ajuste
+#include "TheWallIncremental/Public/Data/Types.h"
 
-
-#include "TheWallIncremental/Public/Ability/AbilityScripts/TWIFreezingZoneAbility.h"
-
-
-// Sets default values
 ATWIFreezingZoneAbility::ATWIFreezingZoneAbility()
 {
-	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	bUseArea = true;
+	LogicTickInterval = 0.5f; // applique DamagePerTick périodiquement
 }
 
-// Called when the game starts or when spawned
-void ATWIFreezingZoneAbility::BeginPlay()
+void ATWIFreezingZoneAbility::OnActivate()
 {
-	Super::BeginPlay();
-	
+	Super::OnActivate(); // active la zone standard (rayon = Radius * RadiusMultiplier)
 }
 
-// Called every frame
-void ATWIFreezingZoneAbility::Tick(float DeltaTime)
+void ATWIFreezingZoneAbility::OnLogicTick()
 {
-	Super::Tick(DeltaTime);
+	for (TWeakObjectPtr<ATWIEnemy> E : OverlappingEnemies)
+	{
+		if (ATWIEnemy* Enemy = E.Get())
+		{
+			Enemy->ApplyDamage(DamagePerTick);
+		}
+	}
 }
 
+void ATWIFreezingZoneAbility::OnEnemyEnter(ATWIEnemy* Enemy)
+{
+	if (!Enemy) return;
+	if (UTWIStatComponent* SC = Enemy->FindComponentByClass<UTWIStatComponent>())
+	{
+		if (SC->HasStat(EStat::Speed))
+		{
+			const float cur = SC->GetStat(EStat::Speed);
+			const float delta = -cur * SlowPercent;
+			SC->ModifyStat(EStat::Speed, delta);
+			AppliedSlow.Add(Enemy, delta);
+		}
+	}
+}
+
+void ATWIFreezingZoneAbility::OnEnemyExit(ATWIEnemy* Enemy)
+{
+	if (!Enemy) return;
+	if (float* Delta = AppliedSlow.Find(Enemy))
+	{
+		if (UTWIStatComponent* SC = Enemy->FindComponentByClass<UTWIStatComponent>())
+		{
+			SC->ModifyStat(EStat::Speed, -(*Delta));
+		}
+		AppliedSlow.Remove(Enemy);
+	}
+}

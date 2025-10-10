@@ -1,26 +1,17 @@
-﻿// Fill out your copyright notice in the Description page of Project Settings.
+﻿#include "TheWallIncremental/Public/Ability/AbilityScripts/TWIMagicMissileAbility.h"
 
-
-#include "TheWallIncremental/Public/Ability/AbilityScripts/TWIMagicMissileAbility.h"
-
-
-// Sets default values
 ATWIMagicMissileAbility::ATWIMagicMissileAbility()
 {
-	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	// Zone requise, mais très brève :
+	bUseArea = true;
+	// lifetime court : tu peux aussi le piloter via la stat LifeTime de la courbe
+	if (Lifetime <= 0.f) { /* laissé au container */ }
 }
 
-// Called when the game starts or when spawned
-void ATWIMagicMissileAbility::BeginPlay()
+void ATWIMagicMissileAbility::OnActivate()
 {
-	Super::BeginPlay();
-	
+	// Burst immédiat dans un petit rayon, puis destruction
+	const float R = FMath::Max(10.f, Radius * LocalRadiusMultiplier);
+	DealDamageInRadius(R, DamagePerTick);
+	DestroyAbility();
 }
-
-// Called every frame
-void ATWIMagicMissileAbility::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-}
-

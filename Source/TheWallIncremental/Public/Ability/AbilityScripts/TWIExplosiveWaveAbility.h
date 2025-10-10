@@ -1,25 +1,17 @@
-﻿// Fill out your copyright notice in the Description page of Project Settings.
-
-#pragma once
-
-#include "CoreMinimal.h"
-#include "TheWallIncremental/Public/Ability/TWIAbility.h"
+﻿#pragma once
+#include "Ability/TWIAbility.h"
 #include "TWIExplosiveWaveAbility.generated.h"
 
 UCLASS()
-class THEWALLINCREMENTAL_API ATWIExplosiveWaveAbility : public ATWIAbility
+class ATWIExplosiveWaveAbility : public ATWIAbility
 {
 	GENERATED_BODY()
-
 public:
-	// Sets default values for this actor's properties
 	ATWIExplosiveWaveAbility();
 
 protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
+	UPROPERTY(EditDefaultsOnly, Category="ExplosiveWave")
+	float LocalRadiusMultiplier = 0.7f;
 
-public:
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
+	virtual void OnActivate() override;
 };

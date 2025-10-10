@@ -1,25 +1,26 @@
-﻿// Fill out your copyright notice in the Description page of Project Settings.
-
-#pragma once
-
-#include "CoreMinimal.h"
-#include "TheWallIncremental/Public/Ability/TWIAbility.h"
+﻿#pragma once
+#include "Ability/TWIAbility.h"
+#include "TheWallIncremental/Public/Components/TWIStatComponent.h"
 #include "TWIFreezingZoneAbility.generated.h"
 
+
+
 UCLASS()
-class THEWALLINCREMENTAL_API ATWIFreezingZoneAbility : public ATWIAbility
+class ATWIFreezingZoneAbility : public ATWIAbility
 {
 	GENERATED_BODY()
-
 public:
-	// Sets default values for this actor's properties
 	ATWIFreezingZoneAbility();
 
 protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
+	UPROPERTY(EditDefaultsOnly, Category="Freeze")
+	float SlowPercent = 0.3f; // -30% speed
 
-public:
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
+	/** mémorise le delta appliqué pour restaurer la vitesse à la sortie */
+	TMap<TWeakObjectPtr<AActor>, float> AppliedSlow;
+
+	virtual void OnActivate() override;
+	virtual void OnLogicTick() override;
+	virtual void OnEnemyEnter(class ATWIEnemy* Enemy) override;
+	virtual void OnEnemyExit(class ATWIEnemy* Enemy) override;
 };

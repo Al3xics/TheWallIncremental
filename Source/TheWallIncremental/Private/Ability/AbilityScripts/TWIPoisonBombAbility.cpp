@@ -1,26 +1,24 @@
-﻿// Fill out your copyright notice in the Description page of Project Settings.
+﻿#include "TheWallIncremental/Public/Ability/AbilityScripts/TWIPoisonBombAbility.h"
+#include "Characters/TWIEnemy.h"
 
-
-#include "TheWallIncremental/Public/Ability/AbilityScripts/TWIPoisonBombAbility.h"
-
-
-// Sets default values
 ATWIPoisonBombAbility::ATWIPoisonBombAbility()
 {
-	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	bUseArea = true;
+	LogicTickInterval = 0.5f;
 }
 
-// Called when the game starts or when spawned
-void ATWIPoisonBombAbility::BeginPlay()
+void ATWIPoisonBombAbility::OnActivate()
 {
-	Super::BeginPlay();
-	
+	Super::OnActivate();
 }
 
-// Called every frame
-void ATWIPoisonBombAbility::Tick(float DeltaTime)
+void ATWIPoisonBombAbility::OnLogicTick()
 {
-	Super::Tick(DeltaTime);
+	for (TWeakObjectPtr<ATWIEnemy> E : OverlappingEnemies)
+	{
+		if (ATWIEnemy* Enemy = E.Get())
+		{
+			Enemy->ApplyDamage(DamagePerTick);
+		}
+	}
 }
-

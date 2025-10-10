@@ -51,7 +51,7 @@ void ATWIEnemy::MoveToWall()
 	
 }
 
-void ATWIEnemy::TakeDamage(float Amount)
+void ATWIEnemy::ApplyDamage(float Amount)
 {
 	StatComponent->AddToStat(EStat::HP, -Amount);
 	UE_LOG(LogEnemy, Log, TEXT("Enemy took %f damage"), Amount);

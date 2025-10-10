@@ -1,26 +1,44 @@
-﻿// Fill out your copyright notice in the Description page of Project Settings.
+﻿#include "TheWallIncremental/Public/Ability/AbilityScripts/TWICycloneAbility.h"
+#include "Characters/TWIEnemy.h"
 
-
-#include "TheWallIncremental/Public/Ability/AbilityScripts/TWICycloneAbility.h"
-
-
-// Sets default values
 ATWICycloneAbility::ATWICycloneAbility()
 {
-	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	bUseArea = true;
+	LogicTickInterval = 0.5f;
+	RadiusMultiplier = 1.4f; // plus grand par défaut
 }
 
-// Called when the game starts or when spawned
-void ATWICycloneAbility::BeginPlay()
+void ATWICycloneAbility::OnActivate()
 {
-	Super::BeginPlay();
-	
+	Super::OnActivate();
 }
 
-// Called every frame
-void ATWICycloneAbility::Tick(float DeltaTime)
+void ATWICycloneAbility::OnTickAbility(float DeltaSeconds)
 {
-	Super::Tick(DeltaTime);
+	for (TWeakObjectPtr<ATWIEnemy> E : OverlappingEnemies)
+	{
+		if (ATWIEnemy* Enemy = E.Get())
+		{
+			FVector Dir = (Target - Enemy->GetActorLocation());
+			Dir.Z = 0.f;
+			const float dist = Dir.Size();
+			if (dist > KINDA_SMALL_NUMBER)
+			{
+				Dir /= dist;
+				const FVector delta = Dir * PullSpeed * DeltaSeconds;
+				Enemy->AddActorWorldOffset(delta, true);
+			}
+		}
+	}
 }
 
+void ATWICycloneAbility::OnLogicTick()
+{
+	for (TWeakObjectPtr<ATWIEnemy> E : OverlappingEnemies)
+	{
+		if (ATWIEnemy* Enemy = E.Get())
+		{
+			Enemy->ApplyDamage(DamagePerTick);
+		}
+	}
+}

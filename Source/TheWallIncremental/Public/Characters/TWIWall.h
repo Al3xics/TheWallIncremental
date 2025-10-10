@@ -23,7 +23,7 @@ public:
 	UTWIStatComponent* StatComponent;
 
 	UFUNCTION(BlueprintCallable, Category = "Wall")
-	void TakeDamage(float Amount);
+	void ApplyDamage(float Amount);
 
 	UFUNCTION(BlueprintCallable, Category = "Wall")
 	bool IsAlive() const;
