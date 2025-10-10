@@ -15,12 +15,14 @@ class THEWALLINCREMENTAL_API UTWIResourceSubsystem : public UWorldSubsystem
 	GENERATED_BODY()
 
 private:
+	// ====== Variables ======
 	int32 Gold = 0;
 
 public:
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
 	virtual void Deinitialize() override;
-	
+
+	// ====== Functions ======
 	UFUNCTION(BlueprintCallable, Category = "Resources")
 	void AddGold(const int32 Amount);
 

@@ -30,11 +30,11 @@ struct FAbilityStat
 	GENERATED_BODY()
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ability")
-	EAbilityStat Stat;
+	EAbilityStat Stat = EAbilityStat::Cooldown;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ability")
-	UCurveBase* CurveStat;
+	UCurveBase* CurveStat = nullptr;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Ability")
-	UCurveBase* CurveCost;
+	UCurveBase* CurveCost = nullptr;
 };

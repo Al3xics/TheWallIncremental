@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Components/BoxComponent.h"
 #include "Components/TWIStatComponent.h"
 #include "GameFramework/Actor.h"
 #include "TWIWall.generated.h"
@@ -15,15 +16,23 @@ class THEWALLINCREMENTAL_API ATWIWall : public AActor
 protected:
 	virtual void BeginPlay() override;
 
+	// ====== Components ======
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Wall")
+	UBoxComponent* CollisionBox ;
+	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Wall")
+	UStaticMeshComponent* MeshComponent;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Wall")
+	UTWIStatComponent* StatComponent;
+
 public:
 	ATWIWall();
 	virtual void Tick(float DeltaTime) override;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Wall")
-	UTWIStatComponent* StatComponent;
-
+	// ====== Functions ======
 	UFUNCTION(BlueprintCallable, Category = "Wall")
-	void TakeDamage(float Amount);
+	void ApplyDamage(float Amount);
 
 	UFUNCTION(BlueprintCallable, Category = "Wall")
 	bool IsAlive() const;

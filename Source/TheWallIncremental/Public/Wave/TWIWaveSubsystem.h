@@ -16,8 +16,13 @@ class THEWALLINCREMENTAL_API UTWIWaveSubsystem : public UWorldSubsystem
 	GENERATED_BODY()
 
 private:
+	// ====== Variables ======
 	int WaveIndex = 0;
 	UTWIWaveConfig* WaveConfig = nullptr;
+	TWeakObjectPtr<ATWISpawnZone> SpawnZone = nullptr;
+	FTimerHandle SpawnTimerHandle;
+	FTimerHandle NextWaveHandle;
+	int32 SpawnedEnemies = 0;
 
 	UPROPERTY(Config) // This variable is set in the "/Config/DefaultEngine.ini" file to use a Data-Driven method
 	TSoftObjectPtr<UTWIWaveConfig> WaveConfigAsset;
@@ -26,6 +31,10 @@ public:
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
 	virtual void Deinitialize() override;
 
+	// ====== Functions ======
+	UFUNCTION(BlueprintCallable, Category = "Wave")
+	void RegisterSpawnZone(ATWISpawnZone* Zone);
+	
 	UFUNCTION(BlueprintCallable, Category = "Wave")
 	void StartNextWave();
 
@@ -36,8 +45,8 @@ public:
 	void EndGame();
 
 	UFUNCTION(BlueprintCallable, Category = "Wave")
-	float GetEnemyHPScaling() const;
+	float GetEnemyScaledHP(ATWIEnemy* Enemy) const;
 	
 	UFUNCTION(BlueprintCallable, Category = "Wave")
-	float GetSpawnRateScaling() const;
+	float GetScaledSpawnRate() const;
 };

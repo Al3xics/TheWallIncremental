@@ -12,6 +12,14 @@ ATWIWall::ATWIWall()
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	CollisionBox  = CreateDefaultSubobject<UBoxComponent>(TEXT("CollisionBox"));
+	SetRootComponent(CollisionBox);
+	CollisionBox->SetBoxExtent(FVector(100.f, 100.f, 100.f));
+	CollisionBox->SetCollisionProfileName(TEXT("BlockAllDynamic"));
+
+	MeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MeshComponent"));
+	MeshComponent->SetupAttachment(CollisionBox);
+
 	StatComponent = CreateDefaultSubobject<UTWIStatComponent>(TEXT("StatComponent"));
 	StatComponent->InitializeStat(EStat::MaxHP, 100.f);
 	StatComponent->InitializeStat(EStat::HP, 0.f);
@@ -37,7 +45,7 @@ void ATWIWall::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
-void ATWIWall::TakeDamage(float Amount)
+void ATWIWall::ApplyDamage(float Amount)
 {
 	StatComponent->AddToStat(EStat::HP, -Amount);
 	UE_LOG(LogWall, Log, TEXT("Wall took %f damage"), Amount);

@@ -18,13 +18,15 @@ private:
 protected:
 	virtual void BeginPlay() override;
 
+	// ====== Variables ======
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Stats")
+	TMap<EStat, float> Stats;
+
 public:
 	UTWIStatComponent();
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Stats")
-	TMap<EStat, float> Stats;
-	
+	// ====== Functions ======
 	UFUNCTION(BlueprintCallable, Category = "Stats")
 	float GetStat(EStat Stat) const;
 
